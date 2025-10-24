@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "/api",
+  baseURL: "https://mocki.io",
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
