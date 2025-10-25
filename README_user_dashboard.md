@@ -90,7 +90,8 @@ npm run dev
 
 ---
 
-## 🧰 Vite Configuration (Proxy + CORS Fix)
+## 🧰 Vite Configuration 
+
 
 ### ⚙️ `vite.config.ts`
 
@@ -100,17 +101,23 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://mocki.io",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
+  base: "./", // ensures relative paths for build files
+  build: {
+    outDir: "dist", // output folder for production build
   },
+  // Proxy configuration is removed because CORS is resolved
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "https://mocki.io",
+  //       changeOrigin: true,
+  //       secure: false,
+  //       rewrite: (path) => path.replace(/^\/api/, ""),
+  //     },
+  //   },
+  // },
 });
+
 ```
 
 ---
@@ -276,7 +283,7 @@ Redux Store Updates
 ▼
 UsersPage Re-renders
 │ │ │
-│ │ └── Search/Filter (client-side)
+│ │ └── Filter (client-side)
 │ └── Pagination Interaction
 └── View User Details ──> UserDetailModal
 └── Favorite Toggle ──> Favorites Slice + localStorage
@@ -408,8 +415,8 @@ Explanation of the Flow
 ### 8) Search / Filter
 
 - SearchBar updates a `searchTerm` in Redux or component state.
-- UsersPage computes a filtered list from the current `list` using case-insensitive matching on name and email.
-- Search is client-side for the data already fetched; if server-side search is needed, the SearchBar should dispatch a thunk that calls the API with the search parameter.
+- UsersPage filters the current list client-side using case-insensitive matching on name and email.
+- Search is performed on already fetched data; for server-side search, the SearchBar could dispatch a thunk with the query.
 
 ### 9) Viewing User Details
 
